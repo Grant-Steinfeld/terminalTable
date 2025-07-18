@@ -10,13 +10,14 @@ A functional JavaScript program that creates beautiful, formatted ASCII tables f
 - 🎯 **Pure Functions**: Built with functional programming principles
 - 🧪 **Comprehensive Testing**: Full test coverage using Node's built-in assert
 - 📦 **No Dependencies**: Zero external dependencies required
+- 🔄 **ES6 Modules**: Modern JavaScript with import/export statements
 
 ## Quick Start
 
 ### Basic Usage
 
 ```javascript
-const { generateAsciiTable } = require('./asciiTable.js');
+import { generateAsciiTable } from './asciiTable.js';
 
 const data = {
   headers: ['Name', 'Age', 'City'],
@@ -45,7 +46,7 @@ Output:
 ### From Array of Objects
 
 ```javascript
-const { createTableFromObjects } = require('./asciiTable.js');
+import { createTableFromObjects } from './asciiTable.js';
 
 const users = [
   { id: 1, name: 'Alice', role: 'Admin' },
@@ -189,6 +190,11 @@ node example.js
 
 # Run the test suite
 node test.js
+
+# Or use npm scripts
+npm run example
+npm run test
+npm run demo
 ```
 
 ## Features in Detail
@@ -229,13 +235,13 @@ The library is optimized for:
 
 ## Browser Support
 
-For browser usage, simply remove the Node.js export section and use the functions directly:
+For browser usage, you can use the ES6 modules directly:
 
 ```javascript
-// Remove this section for browser use
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ... };
-}
+// In a browser environment with ES6 modules
+import { generateAsciiTable } from './asciiTable.js';
+
+// Or use a bundler like webpack, rollup, or vite
 ```
 
 ## Contributing

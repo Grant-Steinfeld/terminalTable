@@ -162,12 +162,10 @@ const createTableFromObjects = (data, columns, options = {}) => {
 };
 
 // Export functions for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    generateAsciiTable,
-    createTableFromObjects,
-    calculateColumnWidths,
-    formatRow,
-    createBorder
-  };
-} 
+export {
+  generateAsciiTable,
+  createTableFromObjects,
+  calculateColumnWidths,
+  formatRow,
+  createBorder
+}; 

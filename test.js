@@ -3,14 +3,14 @@
  * Using Node's built-in assert function
  */
 
-const assert = require('assert');
-const { 
+import assert from 'assert';
+import { 
   generateAsciiTable, 
   createTableFromObjects, 
   calculateColumnWidths,
   formatRow,
   createBorder 
-} = require('./asciiTable.js');
+} from './asciiTable.js';
 
 console.log('Running tests for ASCII Table Generator...\n');
 

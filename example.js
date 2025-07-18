@@ -3,7 +3,7 @@
  */
 
 // Import the table generator functions
-const { generateAsciiTable, createTableFromObjects } = require('./asciiTable.js');
+import { generateAsciiTable, createTableFromObjects } from './asciiTable.js';
 
 console.log('=== Dynamic ASCII Table Generator Examples ===\n');
 

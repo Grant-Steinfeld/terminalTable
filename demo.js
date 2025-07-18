@@ -4,7 +4,7 @@
  * This demonstrates the most basic usage of the ASCII table generator.
  */
 
-const { generateAsciiTable } = require('./asciiTable.js');
+import { generateAsciiTable } from './asciiTable.js';
 
 // Your JSON data representing the grid
 const gridData = {
