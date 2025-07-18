@@ -39,16 +39,16 @@ console.log('\n');
 // Example 5: Table from array of objects
 console.log('5. Table from Array of Objects:');
 const userData = [
-  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin' },
-  { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User' },
-  { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'Editor' },
-  { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'User' }
+  { id: 1, name: 'Alice Johnson', city: 'Seattle', role: 'Admin' },
+  { id: 2, name: 'Bob Smith', city: 'Austin', role: 'User' },
+  { id: 3, name: 'Charlie Brown', city: 'Denver', role: 'Editor' },
+  { id: 4, name: 'Diana Prince', city: 'Portland', role: 'User' }
 ];
 
 const columns = [
   { key: 'id', title: 'ID' },
   { key: 'name', title: 'Full Name' },
-  { key: 'email', title: 'Email Address' },
+  { key: 'city', title: 'City' },
   { key: 'role', title: 'User Role' }
 ];
 
