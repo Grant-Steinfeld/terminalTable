@@ -197,6 +197,46 @@ npm run test
 npm run demo
 ```
 
+## VS Code Debugging
+
+This project includes comprehensive VS Code debugging setup:
+
+### Debug Configurations
+
+1. **Debug Demo** - Debug the basic demo file
+2. **Debug Examples** - Debug the comprehensive examples
+3. **Debug Tests** - Debug the test suite
+4. **Debug ASCII Table Library** - Debug the main library functions
+5. **Debug with Breakpoints** - Debug with automatic restart
+
+### How to Debug
+
+1. **Set Breakpoints**: Click in the gutter next to line numbers in `asciiTable.js`
+2. **Start Debugging**: Press `F5` or go to Run → Start Debugging
+3. **Select Configuration**: Choose from the available debug configurations
+4. **Use Debug Console**: Inspect variables and execute expressions
+5. **Step Through Code**: Use F10 (step over), F11 (step into), F12 (step out)
+
+### Debug Scenarios
+
+The `debug-library.js` file includes various debugging scenarios:
+- Column width calculation testing
+- Border creation validation
+- Row formatting verification
+- Style testing (simple, double, rounded)
+- Object-to-table conversion
+- Edge case handling
+- Performance testing
+
+### Debug Tasks
+
+Available tasks (Ctrl+Shift+P → "Tasks: Run Task"):
+- **Run Tests** - Execute test suite
+- **Run Examples** - Run example demonstrations
+- **Run Demo** - Run basic demo
+- **Run Debug Library** - Run comprehensive debug scenarios
+- **Watch Tests** - Run tests in watch mode
+
 ## Features in Detail
 
 ### Automatic Column Width Calculation

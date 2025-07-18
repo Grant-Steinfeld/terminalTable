@@ -7,7 +7,8 @@
     "scripts": {
         "test": "node test.js",
         "example": "node example.js",
-        "demo": "node demo.js"
+        "demo": "node demo.js",
+        "debug": "node debug-library.js"
     },
     "keywords": [
         "ascii",
