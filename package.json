@@ -1,0 +1,30 @@
+{
+    "name": "dynamic-ascii-table",
+    "version": "1.0.0",
+    "description": "A functional JavaScript program that creates dynamic ASCII tables from JSON data",
+    "type": "module",
+    "main": "asciiTable.js",
+    "scripts": {
+        "test": "node test.js",
+        "example": "node example.js",
+        "demo": "node demo.js",
+        "debug": "node debug-library.js",
+        "word-wrap": "node word-wrap-demo.js"
+    },
+    "keywords": [
+        "ascii",
+        "table",
+        "functional",
+        "javascript",
+        "json",
+        "terminal",
+        "console",
+        "word-wrap",
+        "text-wrapping"
+    ],
+    "author": "",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}
