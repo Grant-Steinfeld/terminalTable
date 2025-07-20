@@ -3,14 +3,14 @@
  * Using Node's built-in assert function
  */
 
-const assert = require('assert');
-const { 
+import assert from 'assert';
+import { 
   generateAsciiTable, 
   createTableFromObjects, 
   calculateColumnWidths,
   formatRow,
   createBorder 
-} = require('./asciiTable.js');
+} from './asciiTable.js';
 
 console.log('Running tests for ASCII Table Generator...\n');
 
@@ -36,9 +36,9 @@ console.log('✓ createBorder passed');
 
 // Test 3: formatRow function
 console.log('Test 3: formatRow');
-const formattedRow = formatRow(['Alice', '25', 'New York'], [7, 3, 11], '|', '|', '|');
+const formattedRows = formatRow(['Alice', '25', 'New York'], [7, 3, 11], '|', '|', '|');
 const expectedRow = '| Alice   | 25  | New York    |';
-assert.strictEqual(formattedRow, expectedRow, 'Row should be formatted correctly');
+assert.strictEqual(formattedRows[0], expectedRow, 'Row should be formatted correctly');
 console.log('✓ formatRow passed');
 
 // Test 4: Basic table generation

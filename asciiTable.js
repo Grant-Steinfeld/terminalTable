@@ -4,20 +4,70 @@
  */
 
 /**
+ * Wraps text to fit within a specified width
+ * @param {string} text - Text to wrap
+ * @param {number} maxWidth - Maximum width for the text
+ * @param {boolean} wrapWords - Whether to wrap at word boundaries (default: true)
+ * @returns {Array} Array of wrapped lines
+ */
+const wrapText = (text, maxWidth, wrapWords = true) => {
+  if (!text || maxWidth <= 0) return [''];
+  
+  const textStr = String(text);
+  if (textStr.length <= maxWidth) return [textStr];
+  
+  if (!wrapWords) {
+    // Simple character-based wrapping
+    const lines = [];
+    for (let i = 0; i < textStr.length; i += maxWidth) {
+      lines.push(textStr.slice(i, i + maxWidth));
+    }
+    return lines;
+  }
+  
+  // Word-based wrapping
+  const words = textStr.split(/\s+/);
+  const lines = [];
+  let currentLine = '';
+  
+  for (const word of words) {
+    if (currentLine.length + word.length + 1 <= maxWidth) {
+      currentLine += (currentLine ? ' ' : '') + word;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      if (word.length > maxWidth) {
+        // Word is too long, break it
+        for (let i = 0; i < word.length; i += maxWidth) {
+          lines.push(word.slice(i, i + maxWidth));
+        }
+        currentLine = '';
+      } else {
+        currentLine = word;
+      }
+    }
+  }
+  
+  if (currentLine) lines.push(currentLine);
+  return lines.length > 0 ? lines : [''];
+};
+
+/**
  * Calculates the maximum width needed for each column
  * @param {Array} headers - Array of header strings
  * @param {Array} rows - Array of row arrays
+ * @param {number} maxColumnWidth - Maximum width for any column (default: 50)
  * @returns {Array} Array of column widths
  */
-const calculateColumnWidths = (headers, rows) => {
+const calculateColumnWidths = (headers, rows, maxColumnWidth = 50) => {
   const allRows = [headers, ...rows];
   return headers.map((_, columnIndex) => {
-    return Math.max(
+    const maxWidth = Math.max(
       ...allRows.map(row => {
         const cell = String(row[columnIndex] === null || row[columnIndex] === undefined ? '' : row[columnIndex]);
-        return cell.length;
+        return Math.min(cell.length, maxColumnWidth);
       })
     );
+    return Math.min(maxWidth, maxColumnWidth);
   });
 };
 
@@ -36,21 +86,37 @@ const createBorder = (columnWidths, left, middle, right, separator) => {
 };
 
 /**
- * Formats a single row of data
+ * Formats a single row of data with support for wrapped text
  * @param {Array} row - Array of cell values
  * @param {Array} columnWidths - Array of column widths
  * @param {string} left - Left border character
  * @param {string} right - Right border character
  * @param {string} separator - Column separator character
- * @returns {string} Formatted row string
+ * @param {boolean} wrapWords - Whether to wrap at word boundaries (default: true)
+ * @returns {Array} Array of formatted row strings (one for each line)
  */
-const formatRow = (row, columnWidths, left, right, separator) => {
-  const formattedCells = row.map((cell, index) => {
+const formatRow = (row, columnWidths, left, right, separator, wrapWords = true) => {
+  // Wrap each cell to its column width
+  const wrappedCells = row.map((cell, index) => {
     const cellStr = String(cell === null || cell === undefined ? '' : cell);
-    const padding = ' '.repeat(columnWidths[index] - cellStr.length);
-    return ` ${cellStr}${padding} `;
+    return wrapText(cellStr, columnWidths[index], wrapWords);
   });
-  return left + formattedCells.join(separator) + right;
+  
+  // Find the maximum number of lines needed
+  const maxLines = Math.max(...wrappedCells.map(lines => lines.length));
+  
+  // Create formatted rows for each line
+  const formattedRows = [];
+  for (let lineIndex = 0; lineIndex < maxLines; lineIndex++) {
+    const formattedCells = wrappedCells.map((lines, cellIndex) => {
+      const line = lines[lineIndex] || '';
+      const padding = ' '.repeat(columnWidths[cellIndex] - line.length);
+      return ` ${line}${padding} `;
+    });
+    formattedRows.push(left + formattedCells.join(separator) + right);
+  }
+  
+  return formattedRows;
 };
 
 /**
@@ -61,11 +127,18 @@ const formatRow = (row, columnWidths, left, right, separator) => {
  * @param {Object} options - Optional formatting options
  * @param {string} options.style - Table style ('simple', 'double', 'rounded')
  * @param {boolean} options.showBorders - Whether to show borders (default: true)
+ * @param {number} options.maxColumnWidth - Maximum width for any column (default: 50)
+ * @param {boolean} options.wrapWords - Whether to wrap at word boundaries (default: true)
  * @returns {string} Formatted ASCII table string
  */
 const generateAsciiTable = (tableData, options = {}) => {
   const { headers = [], rows = [] } = tableData;
-  const { style = 'simple', showBorders = true } = options;
+  const { 
+    style = 'simple', 
+    showBorders = true, 
+    maxColumnWidth = 50,
+    wrapWords = true 
+  } = options;
   
   if (!headers.length) {
     return '';
@@ -96,7 +169,7 @@ const generateAsciiTable = (tableData, options = {}) => {
   const borders = borderStyles[style] || borderStyles.simple;
   
   // Calculate column widths
-  const columnWidths = calculateColumnWidths(headers, rows);
+  const columnWidths = calculateColumnWidths(headers, rows, maxColumnWidth);
   
   // Build table lines
   const lines = [];
@@ -113,7 +186,8 @@ const generateAsciiTable = (tableData, options = {}) => {
   }
   
   // Headers
-  lines.push(formatRow(headers, columnWidths, borders.vertical, borders.vertical, borders.vertical));
+  const headerLines = formatRow(headers, columnWidths, borders.vertical, borders.vertical, borders.vertical, wrapWords);
+  lines.push(...headerLines);
   
   if (showBorders && rows.length > 0) {
     // Separator line between headers and data
@@ -128,7 +202,8 @@ const generateAsciiTable = (tableData, options = {}) => {
   
   // Data rows
   rows.forEach(row => {
-    lines.push(formatRow(row, columnWidths, borders.vertical, borders.vertical, borders.vertical));
+    const rowLines = formatRow(row, columnWidths, borders.vertical, borders.vertical, borders.vertical, wrapWords);
+    lines.push(...rowLines);
   });
   
   if (showBorders) {
@@ -162,12 +237,11 @@ const createTableFromObjects = (data, columns, options = {}) => {
 };
 
 // Export functions for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    generateAsciiTable,
-    createTableFromObjects,
-    calculateColumnWidths,
-    formatRow,
-    createBorder
-  };
-} 
+export {
+  generateAsciiTable,
+  createTableFromObjects,
+  calculateColumnWidths,
+  formatRow,
+  createBorder,
+  wrapText
+}; 
